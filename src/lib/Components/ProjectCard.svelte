@@ -9,9 +9,14 @@
 </script>
 
 <article class="card project" class:large class:horizontal>
-  <div class="media" class:logo={project.image?.endsWith(".svg")}>
+  <div class="media" class:logo={project.image?.endsWith(".svg")} class:noimg={!project.image}>
     {#if project.image}
-      <img src={project.image} alt="" loading="lazy" decoding="async" />
+      <img
+        src={project.image}
+        alt="{$locale === 'no' ? 'Skjermbilde av' : 'Screenshot of'} {project.title}"
+        loading="lazy"
+        decoding="async"
+      />
     {:else}
       <div class="placeholder" aria-hidden="true">
         <Icon name="code" size={40} />
@@ -72,6 +77,10 @@
     background: var(--media-bg);
     overflow: hidden;
     border-bottom: 1px solid var(--border);
+  }
+  /* Uten skjermbilde: lavere felt, så kortet ikke får en stor tom flate */
+  .media.noimg {
+    aspect-ratio: 3 / 1;
   }
   .media img {
     width: 100%;

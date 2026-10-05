@@ -3,6 +3,7 @@
   import { education, skills, links } from "$lib/data/profile.js";
   import ScrollReveal from "$lib/Components/ScrollReveal.svelte";
   import Icon from "$lib/Components/Icon.svelte";
+  import CvButton from "$lib/Components/CvButton.svelte";
   import Seo from "$lib/Components/Seo.svelte";
 
   const interests = ["interest_1", "interest_2", "interest_3", "interest_4", "interest_5"];
@@ -30,6 +31,7 @@
         </div>
         <div class="cta">
           <a class="btn btn-primary" href="/contactme">{$t("hero_cta_contact")} <Icon name="arrow" /></a>
+          <CvButton />
           <a class="btn btn-ghost" href={links.github} target="_blank" rel="noopener noreferrer"><Icon name="github" /> GitHub</a>
           {#if links.linkedin}
             <a class="btn btn-ghost" href={links.linkedin} target="_blank" rel="noopener noreferrer"><Icon name="linkedin" /> LinkedIn</a>

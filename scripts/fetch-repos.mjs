@@ -4,8 +4,9 @@
 // Feiler aldri builden: uten nett beholdes forrige fil.
 
 import { writeFile, mkdir, readFile } from "node:fs/promises";
+import { GITHUB_USER } from "../src/lib/data/profile.js";
 
-const USER = "KavanKake";
+const USER = GITHUB_USER;
 const OUT = new URL("../static/data/repos.json", import.meta.url);
 const url = `https://api.github.com/users/${USER}/repos?per_page=100&sort=pushed&type=owner`;
 

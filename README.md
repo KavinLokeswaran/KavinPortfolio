@@ -8,7 +8,7 @@ Bygget med **SvelteKit** (statisk), tospråklig (NO/EN) og publisert via GitHub 
 - **Besøksstatistikk med GoatCounter** (uten cookies): se https://kavin.goatcounter.com
 - **Kontaktskjema via Web3Forms** (sendes i bakgrunnen med takk-/feilmelding; nøkkel i `src/lib/data/profile.js`).
 - **Rekrutterer-vennlig oppsett:** tydelig hero med hvem/hva/tilgjengelighet, ferdigheter med nivå, 3–4 utvalgte prosjekter med teknologi, kode- og live-lenker, om meg, utdanning og kontakt.
-- **Automatiske GitHub-prosjekter:** alle offentlige repoer på [github.com/KavanKake](https://github.com/KavanKake) hentes automatisk
+- **Automatiske GitHub-prosjekter:** alle offentlige repoer på [github.com/KavinLokeswaran](https://github.com/KavinLokeswaran) hentes automatisk
   - live i nettleseren via GitHub API (nye repoer vises med en gang)
   - pluss et øyeblikksbilde (`static/data/repos.json`) som lages ved hver build og oppdateres hver natt av GitHub Actions
 - **GitHub-aktivitetsgraf** på forsiden: bidragskalenderen for siste år hentes ved build (`scripts/fetch-contributions.mjs` → `src/lib/data/contributions.json`), så besøkende ikke kontakter GitHub for den.
@@ -39,4 +39,4 @@ npm run build    # henter repoer + bygger til /build
 ## Kontakt
 
 - E-post: contact@kavinlokeswaran.no
-- GitHub: [KavanKake](https://github.com/KavanKake)
+- GitHub: [KavinLokeswaran](https://github.com/KavinLokeswaran)

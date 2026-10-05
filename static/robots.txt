@@ -2,5 +2,7 @@
 User-agent: *
 Allow: /
 Disallow: /My_projects/
+# CV-ene inneholder telefonnummer – lenkes fra siden, men skal ikke dukke opp i søk
+Disallow: /cv/
 
 Sitemap: https://kavinlokeswaran.no/sitemap.xml

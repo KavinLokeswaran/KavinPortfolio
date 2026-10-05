@@ -5,6 +5,7 @@
   import { onMount } from "svelte";
   import { t, locale } from "$lib/i18n";
   import data from "$lib/data/contributions.json";
+  import { githubStats } from "$lib/data/profile.js";
 
   const STEP = 14; // cellestørrelse + mellomrom
   const CELL = 11;
@@ -93,7 +94,7 @@
   });
 </script>
 
-{#if days.length}
+{#if days.length && data.total >= githubStats.minContributions}
   <figure class="card activity" bind:this={figure}>
     <figcaption class="head">
       <div>

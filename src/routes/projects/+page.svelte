@@ -3,7 +3,7 @@
   import { t } from "$lib/i18n";
   import { links } from "$lib/data/profile.js";
   import { curatedProjects } from "$lib/data/projects.js";
-  import { github, loadRepos } from "$lib/github.js";
+  import { github, loadRepos, describedRepos } from "$lib/github.js";
   import ScrollReveal from "$lib/Components/ScrollReveal.svelte";
   import ProjectCard from "$lib/Components/ProjectCard.svelte";
   import RepoCard from "$lib/Components/RepoCard.svelte";
@@ -20,7 +20,8 @@
   let query = $state("");
   let lang = $state("all");
 
-  const others = $derived($github.repos.filter((r) => !curatedRepos.has(r.name.toLowerCase())));
+  // Bare repoer med beskrivelse, og ikke de som allerede er utvalgte prosjekter
+  const others = $derived(describedRepos($github.repos).filter((r) => !curatedRepos.has(r.name.toLowerCase())));
 
   const languages = $derived([
     ...new Set(others.map((r) => r.language).filter(Boolean))
@@ -65,6 +66,8 @@
   </div>
 </section>
 
+<!-- Vises bare når det finnes flere repoer med beskrivelse enn de utvalgte -->
+{#if $github.status === "ready" && others.length}
 <section class="section tight" id="github">
   <div class="container">
     <div class="section-head">
@@ -79,7 +82,6 @@
       </a>
     </div>
 
-    {#if $github.status === "ready" && others.length}
       <div class="toolbar">
         <label class="search">
           <Icon name="search" size={16} />
@@ -102,20 +104,9 @@
           <RepoCard {repo} />
         {/each}
       </div>
-    {:else if $github.status === "ready" || $github.status === "error"}
-      <p class="empty card">
-        {$github.status === "error" ? $t("gh_error") : $t("gh_empty")}
-        <a href={links.github} target="_blank" rel="noopener noreferrer">github.com/KavanKake</a>
-      </p>
-    {:else}
-      <div class="grid" aria-busy="true" aria-label={$t("gh_loading")}>
-        {#each Array(3) as _}
-          <div class="card skeleton"></div>
-        {/each}
-      </div>
-    {/if}
   </div>
 </section>
+{/if}
 
 <style>
   .page-hero {
@@ -204,21 +195,6 @@
     border-radius: 50%;
     background: var(--success);
     display: inline-block;
-  }
-  .skeleton {
-    height: 190px;
-    background: linear-gradient(100deg, var(--surface) 30%, var(--surface-2) 50%, var(--surface) 70%);
-    background-size: 200% 100%;
-    animation: shimmer 1.4s infinite linear;
-  }
-  @keyframes shimmer {
-    to {
-      background-position: -200% 0;
-    }
-  }
-  .empty {
-    padding: 24px;
-    color: var(--text-muted);
   }
   @media (max-width: 1000px) {
     .grid {

@@ -2,18 +2,36 @@
   import { onMount } from "svelte";
   import { t, locale } from "$lib/i18n";
   import { skills, links } from "$lib/data/profile.js";
-  import { curatedProjects } from "$lib/data/projects.js";
-  import { github, loadRepos, timeAgo } from "$lib/github.js";
+  import { curatedProjects, githubUrl } from "$lib/data/projects.js";
+  import { github, loadRepos, timeAgo, describedRepos } from "$lib/github.js";
   import ScrollReveal from "$lib/Components/ScrollReveal.svelte";
   import ProjectCard from "$lib/Components/ProjectCard.svelte";
   import RepoCard from "$lib/Components/RepoCard.svelte";
   import Icon from "$lib/Components/Icon.svelte";
+  import CvButton from "$lib/Components/CvButton.svelte";
   import ActivityGraph from "$lib/Components/ActivityGraph.svelte";
   import Seo from "$lib/Components/Seo.svelte";
 
   const featured = curatedProjects.filter((p) => p.featured);
-  const latest = $derived($github.repos.slice(0, 6));
-  const lastActive = $derived($github.repos[0]?.pushedAt ?? null);
+
+  // Repoer som allerede er utvalgte prosjekter vises ikke to ganger
+  const curatedRepos = new Set(curatedProjects.filter((p) => p.repo).map((p) => p.repo.toLowerCase()));
+  // Bare repoer med beskrivelse – ellers ser listen uferdig ut
+  const moreRepos = $derived(
+    describedRepos($github.repos).filter((r) => !curatedRepos.has(r.name.toLowerCase())).slice(0, 6)
+  );
+
+  // «Bygger nå»: det utvalgte prosjektet som sist fikk en commit på GitHub
+  const building = $derived.by(() => {
+    for (const r of $github.repos) {
+      const match = curatedProjects.find((p) => p.repo?.toLowerCase() === r.name.toLowerCase());
+      if (match) return match;
+    }
+    return featured[0];
+  });
+  const buildingPushed = $derived(
+    $github.repos.find((r) => r.name.toLowerCase() === building.repo?.toLowerCase())?.pushedAt ?? null
+  );
 
   onMount(loadRepos);
 
@@ -31,8 +49,9 @@
         email: `mailto:${links.email}`,
         jobTitle: "Student og webutvikler",
         description:
-          "Bachelorstudent i programmering og systemarkitektur og webutvikler fra Oslo.",
+          "Bachelorstudent i programmering og systemarkitektur ved Universitetet i Oslo og webutvikler.",
         address: { "@type": "PostalAddress", addressLocality: "Oslo", addressCountry: "NO" },
+        affiliation: { "@type": "CollegeOrUniversity", name: "Universitetet i Oslo", url: "https://www.uio.no" },
         alumniOf: { "@type": "EducationalOrganization", name: "Elvebakken videregående skole" },
         knowsAbout: allSkills,
         knowsLanguage: ["nb", "en"],
@@ -86,6 +105,7 @@
           <Icon name="mail" />
           {$t("hero_cta_contact")}
         </a>
+        <CvButton />
         <a class="icon-btn" href={links.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
           <Icon name="github" size={20} />
         </a>
@@ -107,6 +127,7 @@
         </div>
         <pre><code><span class="k">const</span> <span class="v">kavin</span> = {"{"}
   <span class="p">{$locale === "no" ? "studerer" : "studying"}</span>: <span class="s">"{$t("edu_bachelor")}"</span>,
+  <span class="p">{$locale === "no" ? "sted" : "at"}</span>: <span class="s">"UiO"</span>,
   <span class="p">{$locale === "no" ? "år" : "years"}</span>: <span class="s">"2026 – 2029"</span>,
   <span class="p">stack</span>: [<span class="s">"JavaScript"</span>, <span class="s">"Svelte"</span>,
           <span class="s">"Node"</span>, <span class="s">"Python"</span>],
@@ -121,14 +142,12 @@
   <div class="container">
     <dl class="facts card">
       <div>
-        <dt>
-          {#if $github.status === "ready"}{$github.repos.length}{:else}–{/if}
-        </dt>
-        <dd>{$t("stat_repos")}</dd>
+        <dt><Icon name="school" size={18} /> UiO</dt>
+        <dd>{$t("stat_study")}</dd>
       </div>
       <div>
-        <dt>{lastActive ? timeAgo(lastActive, $locale) : "–"}</dt>
-        <dd>{$t("stat_last")}</dd>
+        <dt><Icon name="code" size={18} /> Python & web</dt>
+        <dd>{$t("stat_stack")}</dd>
       </div>
       <div>
         <dt><Icon name="pin" size={18} /> Oslo</dt>
@@ -199,25 +218,25 @@
       </div>
     </ScrollReveal>
 
-    <div class="featured-grid" class:single={featured.length === 1}>
+    <div class="featured-grid" class:single={featured.length === 1} class:odd={featured.length % 2 === 1}>
       {#each featured as project, i}
         <ScrollReveal delay={i * 90}>
-          <ProjectCard {project} large={i === 0} horizontal={featured.length === 1} />
+          <ProjectCard {project} large={i === 0} horizontal={i === 0 && featured.length % 2 === 1} />
         </ScrollReveal>
       {/each}
     </div>
   </div>
 </section>
 
-<!-- ============ GITHUB (AUTOMATISK) ============ -->
-<section class="section" id="github">
+<!-- ============ HVA JEG JOBBER MED NÅ ============ -->
+<section class="section" id="now">
   <div class="container">
     <ScrollReveal>
       <div class="section-head">
         <div>
-          <p class="eyebrow"><span class="live-dot"></span>{$t("gh_eyebrow")}</p>
-          <h2 class="section-title">{$t("gh_title")}</h2>
-          <p class="section-lead">{$t("gh_lead")}</p>
+          <p class="eyebrow"><span class="live-dot"></span>{$t("now_eyebrow")}</p>
+          <h2 class="section-title">{$t("now_heading")}</h2>
+          <p class="section-lead">{$t("now_lead")}</p>
         </div>
         <a class="btn btn-ghost" href={links.github} target="_blank" rel="noopener noreferrer">
           <Icon name="github" />
@@ -226,25 +245,53 @@
       </div>
     </ScrollReveal>
 
-    <ScrollReveal>
-      <ActivityGraph />
-    </ScrollReveal>
+    <div class="now-grid">
+      <ScrollReveal>
+        <div class="card now-item">
+          <span class="n-icon"><Icon name="school" size={20} /></span>
+          <span class="n-label">{$t("now_study")}</span>
+          <strong>{$t("edu_bachelor")}</strong>
+          <span class="n-sub">{$t("edu_uio")} · 2026 – 2029</span>
+        </div>
+      </ScrollReveal>
+      <ScrollReveal delay={80}>
+        <div class="card now-item">
+          <span class="n-icon"><Icon name="code" size={20} /></span>
+          <span class="n-label">{$t("now_building")}</span>
+          <strong>
+            <a class="stretched" href={githubUrl(building.repo)} target="_blank" rel="noopener noreferrer">{building.title}</a>
+          </strong>
+          <span class="n-sub">
+            {#if buildingPushed}{$t("gh_updated")} {timeAgo(buildingPushed, $locale)}{:else}{building.tech.slice(0, 3).join(" · ")}{/if}
+          </span>
+        </div>
+      </ScrollReveal>
+      <ScrollReveal delay={160}>
+        <div class="card now-item">
+          <span class="n-icon"><Icon name="zap" size={20} /></span>
+          <span class="n-label">{$t("now_focus")}</span>
+          <strong>{$t("now_focus_v")}</strong>
+          <span class="n-sub">{$t("now_focus_sub")}</span>
+        </div>
+      </ScrollReveal>
+      <ScrollReveal delay={240}>
+        <div class="card now-item">
+          <span class="n-icon"><Icon name="target" size={20} /></span>
+          <span class="n-label">{$t("now_open")}</span>
+          <strong>{$t("now_open_v")}</strong>
+          <span class="n-sub">{$t("stat_location")}</span>
+        </div>
+      </ScrollReveal>
+    </div>
 
-    {#if $github.status === "ready" && latest.length}
+    <!-- GitHub-tall og flere repoer vises automatisk når de gjør et godt inntrykk (se githubStats i profile.js) -->
+    <ActivityGraph />
+
+    {#if moreRepos.length}
+      <h3 class="more-title">{$t("projects_more")}</h3>
       <div class="repo-grid">
-        {#each latest as repo (repo.name)}
+        {#each moreRepos as repo (repo.name)}
           <RepoCard {repo} />
-        {/each}
-      </div>
-    {:else if $github.status === "ready" || $github.status === "error"}
-      <p class="empty card">
-        {$github.status === "error" ? $t("gh_error") : $t("gh_empty")}
-        <a href={links.github} target="_blank" rel="noopener noreferrer">github.com/KavanKake</a>
-      </p>
-    {:else}
-      <div class="repo-grid" aria-busy="true" aria-label={$t("gh_loading")}>
-        {#each Array(3) as _}
-          <div class="card skeleton"></div>
         {/each}
       </div>
     {/if}
@@ -255,26 +302,15 @@
 <section class="section alt" id="about">
   <div class="container about-grid">
     <ScrollReveal>
-      <div class="card now">
-        <h3><span class="live-dot"></span>{$t("now_title")}</h3>
-        <dl>
-          <div>
-            <dt><Icon name="school" size={18} /> {$t("now_study")}</dt>
-            <dd>{$t("edu_bachelor")}<span>{$t("edu_bachelor_sub")} · 2026 – 2029</span></dd>
-          </div>
-          <div>
-            <dt><Icon name="code" size={18} /> {$t("now_focus")}</dt>
-            <dd>{$t("now_focus_v")}</dd>
-          </div>
-          <div>
-            <dt><Icon name="target" size={18} /> {$t("now_open")}</dt>
-            <dd>{$t("now_open_v")}</dd>
-          </div>
-          <div>
-            <dt><Icon name="check" size={18} /> {$t("edu_done")}</dt>
-            <dd>{$t("edu_elvebakken")}<span>{$t("edu_elvebakken_sub")} · 2023 – 2026</span></dd>
-          </div>
-        </dl>
+      <div class="about-photo">
+        <img
+          src="/img/kavin-about.webp"
+          alt={$t("about_img_alt")}
+          width="825"
+          height="1100"
+          loading="lazy"
+          decoding="async"
+        />
       </div>
     </ScrollReveal>
     <ScrollReveal delay={100}>
@@ -652,20 +688,76 @@
     display: inline-block;
     animation: pulse 2s infinite;
   }
-  .skeleton {
-    height: 190px;
-    background: linear-gradient(100deg, var(--surface) 30%, var(--surface-2) 50%, var(--surface) 70%);
-    background-size: 200% 100%;
-    animation: shimmer 1.4s infinite linear;
+  .featured-grid.odd > :global(:first-child) {
+    grid-column: 1 / -1;
   }
-  @keyframes shimmer {
-    to {
-      background-position: -200% 0;
-    }
+
+  /* ---------- Hva jeg jobber med nå ---------- */
+  .now-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
   }
-  .empty {
-    padding: 24px;
+  .now-item {
+    position: relative;
+    height: 100%;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .now-item:has(.stretched):hover {
+    transform: translateY(-3px);
+    border-color: var(--border-strong);
+  }
+  .n-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    color: var(--accent);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+  .n-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-faint);
+  }
+  .now-item strong {
+    font-family: var(--font-head);
+    font-size: 1.08rem;
+    line-height: 1.3;
+  }
+  .n-sub {
     color: var(--text-muted);
+    font-size: 0.88rem;
+    margin-top: auto;
+    padding-top: 6px;
+  }
+  .stretched {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .stretched::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+  .now-item:hover .stretched {
+    color: var(--accent);
+  }
+  #now :global(.activity) {
+    margin-top: 22px;
+  }
+  .more-title {
+    font-size: 1.25rem;
+    margin: 40px 0 18px;
   }
 
   /* ---------- Om meg ---------- */
@@ -675,48 +767,17 @@
     gap: clamp(32px, 6vw, 72px);
     align-items: center;
   }
-  .now {
-    padding: 28px;
+  .about-photo {
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    aspect-ratio: 4 / 5;
   }
-  .now h3 {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1.15rem;
-    margin-bottom: 18px;
-  }
-  .now dl {
-    margin: 0;
-    display: grid;
-  }
-  .now dl > div {
-    padding: 14px 0;
-    border-top: 1px solid var(--border);
-  }
-  .now dt {
-    font-size: 0.78rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-faint);
-    gap: 8px;
-    margin-bottom: 4px;
-    font-family: var(--font-body);
-  }
-  .now dd {
-    margin: 0;
-    font-family: var(--font-head);
-    font-weight: 600;
-    font-size: 1.05rem;
-    color: var(--text);
-    display: flex;
-    flex-direction: column;
-  }
-  .now dd span {
-    font-family: var(--font-body);
-    font-weight: 400;
-    font-size: 0.88rem;
-    color: var(--text-muted);
+  .about-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .about-text {
     display: grid;
@@ -791,6 +852,9 @@
 
   /* ---------- Responsivt ---------- */
   @media (max-width: 1000px) {
+    .now-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
     .skills-grid {
       grid-template-columns: repeat(2, 1fr);
     }
@@ -839,9 +903,15 @@
     .about-grid {
       grid-template-columns: 1fr;
     }
+    .about-photo {
+      max-width: 340px;
+    }
 
   }
   @media (max-width: 600px) {
+    .now-grid {
+      grid-template-columns: 1fr;
+    }
     .skills-grid,
     .repo-grid {
       grid-template-columns: 1fr;

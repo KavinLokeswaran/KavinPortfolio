@@ -1,13 +1,21 @@
 // Alt personlig innhold samlet på ett sted – endre her, så oppdateres hele siden.
 
-export const GITHUB_USER = "KavanKake";
+export const GITHUB_USER = "KavinLokeswaran";
 
 export const links = {
   email: "contact@kavinlokeswaran.no",
   github: `https://github.com/${GITHUB_USER}`,
-  instagram: "https://instagram.com/kavinlokeswaran",
+  // Tom = skjult overalt. Instagram er tatt bort for å holde siden profesjonell.
+  instagram: "",
   linkedin: "https://www.linkedin.com/in/kavin-lokeswaran/",
   site: "https://kavinlokeswaran.no"
+};
+
+// CV som PDF per språk (filene ligger i static/cv/). Knappene viser den som passer valgt språk.
+// Ny versjon: eksporter Word-filen til PDF og erstatt filen med samme navn.
+export const cv = {
+  no: { href: "/cv/CV_Kavin_Lokeswaran_NO.pdf", file: "CV_Kavin_Lokeswaran.pdf" },
+  en: { href: "/cv/CV_Kavin_Lokeswaran_EN.pdf", file: "CV_Kavin_Lokeswaran_EN.pdf" }
 };
 
 // Web3Forms tilgangsnøkkel for kontaktskjemaet (https://web3forms.com).
@@ -56,7 +64,9 @@ export const skills = [
 
 export const education = [
   { key: "bachelor", current: true },
-  { key: "elvebakken" },
-  { key: "lofsrud" },
-  { key: "mortensrud" }
+  { key: "elvebakken" }
 ];
+
+// GitHub-tall (aktivitetsgraf) vises først når de er høye nok til å gjøre et godt inntrykk.
+// Senk eller fjern grensen når du vil vise dem.
+export const githubStats = { minContributions: 150 };

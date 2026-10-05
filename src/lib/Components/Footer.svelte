@@ -1,6 +1,6 @@
 <script>
-  import { t } from "$lib/i18n";
-  import { links } from "$lib/data/profile.js";
+  import { t, locale } from "$lib/i18n";
+  import { links, cv } from "$lib/data/profile.js";
   import Icon from "$lib/Components/Icon.svelte";
 
   const social = [
@@ -11,6 +11,7 @@
   ].filter((s) => s.href);
 
   const year = new Date().getFullYear();
+  const cvFile = $derived(cv[$locale] ?? cv.no);
 </script>
 
 <footer class="footer">
@@ -45,6 +46,12 @@
             </a>
           </li>
         {/each}
+        <li>
+          <a href={cvFile.href} download={cvFile.file} type="application/pdf">
+            <Icon name="download" size={16} />
+            {$t("cv_download")}
+          </a>
+        </li>
       </ul>
     </div>
   </div>

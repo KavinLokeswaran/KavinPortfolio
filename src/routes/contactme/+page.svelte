@@ -1,8 +1,9 @@
 <script>
   import { t } from "$lib/i18n";
-  import { links, WEB3FORMS_KEY } from "$lib/data/profile.js";
+  import { links, WEB3FORMS_KEY, GITHUB_USER } from "$lib/data/profile.js";
   import ScrollReveal from "$lib/Components/ScrollReveal.svelte";
   import Icon from "$lib/Components/Icon.svelte";
+  import CvButton from "$lib/Components/CvButton.svelte";
   import Seo from "$lib/Components/Seo.svelte";
 
   let copied = $state(false);
@@ -52,7 +53,7 @@
   }
 
   const social = [
-    { name: "github", label: "GitHub", handle: "KavanKake", href: links.github },
+    { name: "github", label: "GitHub", handle: GITHUB_USER, href: links.github },
     { name: "linkedin", label: "LinkedIn", handle: "Kavin Lokeswaran", href: links.linkedin },
     { name: "instagram", label: "Instagram", handle: "@kavinlokeswaran", href: links.instagram }
   ].filter((s) => s.href);
@@ -104,6 +105,8 @@
             </span>
           </li>
         </ul>
+
+        <CvButton class="cv" />
       </div>
     </ScrollReveal>
 
@@ -280,6 +283,9 @@
     color: var(--text-faint);
   }
 
+  .intro :global(.cv) {
+    margin-top: 16px;
+  }
   .form {
     padding: clamp(22px, 4vw, 36px);
     display: grid;

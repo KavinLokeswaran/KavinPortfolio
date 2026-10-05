@@ -25,7 +25,7 @@ export function initLocale() {
     } catch {
       /* ignorer */
     }
-    document.documentElement.lang = value === "no" ? "no" : "en";
+    document.documentElement.lang = value === "no" ? "nb" : "en";
   });
 }
 
@@ -43,13 +43,13 @@ const translations = {
     hero_hi: "Hei, jeg er",
     hero_title: "Jeg bygger nettsider og apper som er enkle å bruke.",
     hero_pitch:
-      "Bachelorstudent i programmering og systemarkitektur med fokus på webutvikling. Jeg jobber med JavaScript, Svelte, Node/Express og Python – og liker å ta et prosjekt helt fra idé til ferdig, publisert løsning.",
+      "Bachelorstudent i programmering og systemarkitektur ved Universitetet i Oslo, med fokus på webutvikling. Jeg jobber med JavaScript, Svelte, Node/Express og Python – og liker å ta et prosjekt helt fra idé til ferdig, publisert løsning.",
     hero_available: "Åpen for nye muligheter",
     hero_cta_projects: "Se prosjektene mine",
     hero_cta_contact: "Ta kontakt",
     
-    stat_repos: "offentlige repoer",
-    stat_last: "Sist aktiv på GitHub",
+    stat_study: "Bachelorstudent 2026 – 2029",
+    stat_stack: "Det jeg jobber mest med",
     stat_location: "Oslo, Norge",
     stat_languages: "Norsk & engelsk",
 
@@ -89,7 +89,7 @@ const translations = {
     about_eyebrow: "Om meg",
     about_title: "Litt om meg",
     about_p1:
-      "Jeg heter Kavin Lokeswaran og tar en bachelor i programmering og systemarkitektur (2026–2029). Før det gikk jeg IT ved Elvebakken VGS i Oslo, der jeg ble ferdig i 2026. Jeg liker å forstå hvordan teknologi fungerer – og hvordan den kan gjøre hverdagen enklere for folk.",
+      "Jeg heter Kavin Lokeswaran og tar en bachelor i programmering og systemarkitektur ved Universitetet i Oslo (2026–2029). Før det gikk jeg IT ved Elvebakken VGS i Oslo, der jeg ble ferdig i 2026. Jeg liker å forstå hvordan teknologi fungerer – og hvordan den kan gjøre hverdagen enklere for folk.",
     about_p2:
       "Jeg lærer best ved å bygge. Derfor har jeg laget alt fra nettsider og innloggingssystemer til spill i Python og Godot, både alene og i team. Denne nettsiden er også et av prosjektene mine, og de offentlige prosjektene mine finner du på GitHub.",
     about_p3:
@@ -98,10 +98,14 @@ const translations = {
     about_img_alt: "Kavin som jobber på laptop",
 
     values_title: "Hva du får med meg",
-    now_title: "Akkurat nå",
+    now_eyebrow: "Akkurat nå",
+    now_heading: "Hva jeg jobber med nå",
+    now_lead: "Studier, prosjekter og hva jeg ser etter – oppdatert automatisk med det jeg sist har jobbet med på GitHub.",
     now_study: "Studerer",
+    now_building: "Bygger nå",
     now_focus: "Fokus",
-    now_focus_v: "Webutvikling og systemdesign",
+    now_focus_v: "Python og webutvikling",
+    now_focus_sub: "SvelteKit, Flask og API-er",
     now_open: "Ser etter",
     now_open_v: "Deltid, sommerjobb og prosjekter",
     edu_done: "Fullført",
@@ -117,14 +121,9 @@ const translations = {
     edu_elvebakken_sub: "Informasjonsteknologi – fullført",
     edu_elvebakken_years: "2023 – 2026",
     edu_bachelor: "Programmering og systemarkitektur",
-    edu_bachelor_sub: "Bachelorgrad",
+    edu_bachelor_sub: "Bachelorgrad · Universitetet i Oslo",
+    edu_uio: "Universitetet i Oslo",
     edu_bachelor_years: "2026 – 2029",
-    edu_lofsrud: "Lofsrud skole",
-    edu_lofsrud_sub: "Ungdomsskole",
-    edu_lofsrud_years: "2020 – 2023",
-    edu_mortensrud: "Mortensrud skole",
-    edu_mortensrud_sub: "Barneskole",
-    edu_mortensrud_years: "2013 – 2020",
     edu_now: "Nå",
 
     interests_title: "Interesser",
@@ -141,7 +140,7 @@ const translations = {
 
     projects_title: "Prosjekter",
     projects_lead:
-      "Håndplukkede prosjekter øverst, og alle andre offentlige repoer fra GitHub under – de hentes automatisk.",
+      "Prosjekter jeg har bygget, med teknologien bak og lenke til koden på GitHub.",
     projects_curated: "Utvalgte prosjekter",
     projects_more: "Flere prosjekter fra GitHub",
     projects_more_lead: "Hentes automatisk fra GitHub. Nye offentlige repoer vises her uten at jeg trenger å oppdatere siden.",
@@ -194,6 +193,8 @@ const translations = {
     activity_month: "Måned",
 
     nav_privacy: "Personvern",
+    cv_download: "Last ned CV",
+    cv_meta: "PDF · norsk",
     contact_privacy: "Meldingen sendes via Web3Forms til e-posten min.",
     contact_privacy_link: "Les om personvern",
 
@@ -205,11 +206,11 @@ const translations = {
 
     seo_home_title: "student og utvikler i Oslo",
     seo_home_desc:
-      "Portefølje for Kavin Lokeswaran – bachelorstudent i programmering og systemarkitektur og webutvikler fra Oslo. Prosjekter i SvelteKit, JavaScript, Node/Express og Python.",
+      "Portefølje for Kavin Lokeswaran – bachelorstudent i programmering og systemarkitektur ved Universitetet i Oslo og webutvikler. Prosjekter i SvelteKit, JavaScript, Node/Express og Python.",
     seo_projects_desc:
       "Prosjekter av Kavin Lokeswaran: nettsider, webapper og spill bygget med SvelteKit, JavaScript, Node/Express og Python – med kode på GitHub.",
     seo_about_desc:
-      "Om Kavin Lokeswaran: bachelorstudent i programmering og systemarkitektur (2026–2029) fra Oslo, med utdanning, ferdigheter og interesser.",
+      "Om Kavin Lokeswaran: bachelorstudent i programmering og systemarkitektur ved Universitetet i Oslo (2026–2029), med utdanning, ferdigheter og interesser.",
     seo_contact_desc:
       "Ta kontakt med Kavin Lokeswaran om deltidsjobb, sommerjobb, praksis eller prosjekter. Send en melding eller e-post til contact@kavinlokeswaran.no.",
     seo_privacy_desc:
@@ -229,13 +230,13 @@ const translations = {
     hero_hi: "Hi, I'm",
     hero_title: "I build websites and apps that are easy to use.",
     hero_pitch:
-      "Bachelor student in Programming and Systems Architecture, focused on web development. I work with JavaScript, Svelte, Node/Express and Python – and I enjoy taking a project all the way from idea to a finished, published product.",
+      "Bachelor student in Programming and Systems Architecture at the University of Oslo, focused on web development. I work with JavaScript, Svelte, Node/Express and Python – and I enjoy taking a project all the way from idea to a finished, published product.",
     hero_available: "Open to new opportunities",
     hero_cta_projects: "View my projects",
     hero_cta_contact: "Get in touch",
     
-    stat_repos: "public repositories",
-    stat_last: "Last active on GitHub",
+    stat_study: "Bachelor student 2026 – 2029",
+    stat_stack: "What I work with most",
     stat_location: "Oslo, Norway",
     stat_languages: "Norwegian & English",
 
@@ -275,7 +276,7 @@ const translations = {
     about_eyebrow: "About",
     about_title: "A bit about me",
     about_p1:
-      "My name is Kavin Lokeswaran and I'm doing a bachelor's degree in Programming and Systems Architecture (2026–2029). Before that I studied IT at Elvebakken Upper Secondary School in Oslo, graduating in 2026. I love understanding how technology works – and how it can make everyday life easier for people.",
+      "My name is Kavin Lokeswaran and I'm doing a bachelor's degree in Programming and Systems Architecture at the University of Oslo (2026–2029). Before that I studied IT at Elvebakken Upper Secondary School in Oslo, graduating in 2026. I love understanding how technology works – and how it can make everyday life easier for people.",
     about_p2:
       "I learn best by building. I've made everything from websites and login systems to games in Python and Godot, both on my own and in teams. This website is one of my projects too, and you can find my public projects on GitHub.",
     about_p3: "When I'm not coding, I play football or games. My goal is to become an IT engineer.",
@@ -283,10 +284,14 @@ const translations = {
     about_img_alt: "Kavin working on a laptop",
 
     values_title: "What you get with me",
-    now_title: "Right now",
+    now_eyebrow: "Right now",
+    now_heading: "What I'm working on",
+    now_lead: "Studies, projects and what I'm looking for – automatically updated with what I last worked on at GitHub.",
     now_study: "Studying",
+    now_building: "Building",
     now_focus: "Focus",
-    now_focus_v: "Web development and system design",
+    now_focus_v: "Python and web development",
+    now_focus_sub: "SvelteKit, Flask and APIs",
     now_open: "Looking for",
     now_open_v: "Part-time, summer jobs and projects",
     edu_done: "Completed",
@@ -302,14 +307,9 @@ const translations = {
     edu_elvebakken_sub: "Information Technology – completed",
     edu_elvebakken_years: "2023 – 2026",
     edu_bachelor: "Programming and Systems Architecture",
-    edu_bachelor_sub: "Bachelor's degree",
+    edu_bachelor_sub: "Bachelor's degree · University of Oslo",
+    edu_uio: "University of Oslo",
     edu_bachelor_years: "2026 – 2029",
-    edu_lofsrud: "Lofsrud School",
-    edu_lofsrud_sub: "Lower secondary",
-    edu_lofsrud_years: "2020 – 2023",
-    edu_mortensrud: "Mortensrud School",
-    edu_mortensrud_sub: "Primary school",
-    edu_mortensrud_years: "2013 – 2020",
     edu_now: "Now",
 
     interests_title: "Interests",
@@ -326,7 +326,7 @@ const translations = {
 
     projects_title: "Projects",
     projects_lead:
-      "Hand-picked projects at the top, and every other public GitHub repository below – fetched automatically.",
+      "Projects I've built, with the tech behind them and a link to the code on GitHub.",
     projects_curated: "Featured projects",
     projects_more: "More projects from GitHub",
     projects_more_lead: "Fetched automatically from GitHub. New public repositories appear here without me updating the site.",
@@ -379,6 +379,8 @@ const translations = {
     activity_month: "Month",
 
     nav_privacy: "Privacy",
+    cv_download: "Download CV",
+    cv_meta: "PDF · English",
     contact_privacy: "Your message is sent to my email via Web3Forms.",
     contact_privacy_link: "Read about privacy",
 
@@ -390,11 +392,11 @@ const translations = {
 
     seo_home_title: "student and developer in Oslo",
     seo_home_desc:
-      "Portfolio of Kavin Lokeswaran – bachelor student in Programming and Systems Architecture and web developer from Oslo. Projects in SvelteKit, JavaScript, Node/Express and Python.",
+      "Portfolio of Kavin Lokeswaran – bachelor student in Programming and Systems Architecture at the University of Oslo and web developer. Projects in SvelteKit, JavaScript, Node/Express and Python.",
     seo_projects_desc:
       "Projects by Kavin Lokeswaran: websites, web apps and games built with SvelteKit, JavaScript, Node/Express and Python – with the code on GitHub.",
     seo_about_desc:
-      "About Kavin Lokeswaran: bachelor student in Programming and Systems Architecture (2026–2029) from Oslo – education, skills and interests.",
+      "About Kavin Lokeswaran: bachelor student in Programming and Systems Architecture at the University of Oslo (2026–2029) – education, skills and interests.",
     seo_contact_desc:
       "Get in touch with Kavin Lokeswaran about part-time or summer jobs, internships or projects. Send a message or email contact@kavinlokeswaran.no.",
     seo_privacy_desc:

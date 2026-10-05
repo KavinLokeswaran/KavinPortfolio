@@ -102,6 +102,9 @@ export async function loadRepos() {
   }
 }
 
+/** Bare repoer med beskrivelse på GitHub – uten den ser kortene uferdige ut */
+export const describedRepos = (repos) => repos.filter((r) => r.description);
+
 /** Er repoet opprettet de siste 30 dagene? */
 export function isNew(repo) {
   return Date.now() - Date.parse(repo.createdAt) < 30 * 24 * 60 * 60 * 1000;
